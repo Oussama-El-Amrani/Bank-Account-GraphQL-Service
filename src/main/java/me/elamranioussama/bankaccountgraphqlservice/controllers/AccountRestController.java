@@ -1,7 +1,6 @@
 package me.elamranioussama.bankaccountgraphqlservice.controllers;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
+
 import lombok.AllArgsConstructor;
 import me.elamranioussama.bankaccountgraphqlservice.dtos.BankAccountDTO;
 import me.elamranioussama.bankaccountgraphqlservice.dtos.CreateBankAccountDTO;
@@ -17,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
-@Tag(name = "Bank Account Management", description = "APIs for managing bank accounts")
+
 public class AccountRestController {
 
     private BankAccountRepository bankAccountRepository;
@@ -34,7 +33,6 @@ public class AccountRestController {
 
     @GetMapping("/bankAccounts/{id}")
     public ResponseEntity<BankAccountDTO> getById(
-            @Parameter(description = "Unique identifier of the bank account", required = true)
             @PathVariable String id) {
         BankAccount entity = bankAccountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account not found: " + id));
@@ -43,9 +41,6 @@ public class AccountRestController {
 
     @PostMapping("/bankAccounts")
     public ResponseEntity<BankAccountDTO> create(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Bank account details (ID and createdAt are auto-generated)",
-                    required = true)
             @RequestBody CreateBankAccountDTO dto) {
         BankAccount entity = mapper.toEntity(dto);
         entity.setId(java.util.UUID.randomUUID().toString());
@@ -56,11 +51,7 @@ public class AccountRestController {
 
     @PutMapping("/bankAccounts/{id}")
     public ResponseEntity<BankAccountDTO> update(
-            @Parameter(description = "Unique identifier of the bank account", required = true)
             @PathVariable String id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Updated account details (only include fields to update)",
-                    required = true)
             @RequestBody BankAccountDTO dto) {
         BankAccount existing = bankAccountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account not found: " + id));
@@ -70,7 +61,6 @@ public class AccountRestController {
 
     @DeleteMapping("/bankAccounts/{id}")
     public ResponseEntity<BankAccountDTO> delete(
-            @Parameter(description = "Unique identifier of the bank account to delete", required = true)
             @PathVariable String id){
         BankAccount existing = bankAccountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account not found: " + id));
